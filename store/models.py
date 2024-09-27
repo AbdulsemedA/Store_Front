@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Promotion(models.Model):
     decription = models.CharField(max_length=255)
-    discount = models.FloatField
+    discount = models.FloatField()
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
@@ -12,9 +12,10 @@ class Collection(models.Model):
 
 class Product(models.Model):
     title = models.TextField(max_length=255)
-    description = models.TextField
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    inventory = models.IntegerField
+    slug = models.SlugField()
+    description = models.TextField()
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
     promotions = models.ManyToManyField(Promotion)
@@ -54,7 +55,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    quantity = models.PositiveSmallIntegerField
+    quantity = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
 
 
@@ -62,6 +63,7 @@ class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    zip = models.IntegerField()
 
 
 class Cart(models.Model):
@@ -71,4 +73,4 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveSmallIntegerField
+    quantity = models.PositiveSmallIntegerField()
